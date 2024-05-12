@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}
+    Add Address
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item"><a href="#">Add Address</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">List</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'addaddress' %}" method="post" class="row g-2">
+                {% csrf_token %}
+                    <div class="col-sm-2">
+                        <label for="inputNumber" class="form-label">Number</label>
+                        {{form.housenum}}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputApt" class="form-label">Apt.</label>
+                        {{ form.aptnum }}
+                    </div>
+                    <div class="col-md-8">
+                        <label for="inputStreet" class="form-label">Street</label>
+                        {{form.street}}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputCity" class="form-label">City</label>
+                        {{ form.city }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputState" class="form-label">State</label>
+                        {{form.state}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputZip" class="form-label">Zip</label>
+                        {{form.zip}}
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputCustomer" class="form-label">Customer</label>
+                        {{ form.customer }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputWorkArea" class="form-label">Work Area</label>
+                        {{form.work_area_num}}                    
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputDistance" class="form-label">Distance</label>
+                        {{form.distance}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputOrigin" class="form-label">Origin</label>
+                        {{ form.origin }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputLorR" class="form-label">Left/Right</label>
+                        {{ form.lr }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputLotNum" class="form-label">Lot#</label>
+                        {{ form.lot_num }}
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputElectricCompany" class="form-label">Electic Company</label>
+                        {{ form.provider }}
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label">Notes</label>
+                        {{ form.notes }}
+                    </div>
+
+                    <div class="col-md-4 g-4">
+                        <button type="submit" class="btn btn-primary">Save Address</button>
+                    </div>                  
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

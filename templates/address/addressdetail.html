@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+    Address Detail
+{% endblock title %}
+
+{% block content %}
+<h1> Address Detail </h1>
+<div class="card" style="width: 50rem; margin-top: 1rem;">
+    <div class="card-body">
+      <h4 class="card-title"> 
+        {{ address_detail.housenum }}
+        {{ address_detail.street }}, 
+        {{ address_detail.city }}
+      </h4>
+      <h5>
+        {{ address_detail.housenum }}
+        {{ address_detail.street }}
+        {{ address_detail.apt_num }},
+        {{ address_detail.city }},
+        {{ address_detail.state }}
+        {{ address_detail.zip }}<br><br>
+        {% if address_detail.customer %} <a href="{% url 'customerdetail' address_detail.customer.id %}"> {{ address_detail.customer }} </a> {% endif %}
+      </h5>
+
+    </div>
+</div>
+{% endblock %}

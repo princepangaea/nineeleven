@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}
+    Customer Detail
+{% endblock title %}
+
+{% block content %}
+<h1> Customer Detail </h1>
+
+<div class="card" style="width: 50rem; margin-top: 1rem;">
+    <div class="card-body">
+      <h4 class="card-title"> 
+        {{ customer_detail.last_name }},
+        {{ customer_detail.first_name }}
+      </h4>
+      <h5>
+        {{ customer_detail.mailing_address }}<br>
+        {{ customer_detail.mailing_city }},
+        {{ customer_detail.mailing_state }}
+        {{ customer_detail.mailing_zip }}<br>
+        {{ customer_detail.phone }}<br>
+        {{ customer_detail.email }}
+      </h5>
+
+
+    </div>
+</div>
+
+        {% for i in custaddresses %}
+          {{ custaddresses.street }}
+          {{ custaddresses.city }}
+          {{ custaddresses.state }}
+          {{ custaddresses.zip }}
+        {% endfor %}
+
+{% endblock %}
+
+
+
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
+</div>

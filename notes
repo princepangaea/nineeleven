@@ -1,0 +1,81 @@
+electric companies
+
+cleco
+entergy
+swepco hornbeck
+swepco mansfield
+swepco natchitoches
+swepco
+swepco
+swepco
+swepco
+swepco
+
+
+
+<div class="card">
+            <div class="card-body">
+                <form action="{% url 'addresslist' %}" method="post" class="row g-2">
+                    <div class="col-sm-2">
+                        <label for="inputNumber" class="form-label">Number</label>
+                        <input type="number" class="form-control" id="inputNumber">
+                    </div>
+                    <div class="col-md-8">
+                        <label for="inputStreet" class="form-label">Street</label>
+                        <input type="text" class="form-control" id="inputStreet">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputApt" class="form-label">Apt.</label>
+                        <input type="text" class="form-control" id="inputApt">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputCity" class="form-label">City</label>
+                        <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputState" class="form-label">State</label>
+                        <select name="state" class="form-control" id="inputState">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputZip" class="form-label">Zip</label>
+                        <input type="number" class="form-control" id="inputZip">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputCustomer" class="form-label">Customer</label>
+                        <select name="customer" class="form-control" id="inputCustomer">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputWorkArea" class="form-label">Work Area</label>
+                        <select name="workarea" class="form-control" id="inputWorkArea">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputDistance" class="form-label">Distance</label>
+                        <input type="number" class="form-control" id="inputDistance">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputOrigin" class="form-label">Origin</label>
+                        <input type="text" class="form-control" id="inputOrigin">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputLorR" class="form-label">Left/Right</label>
+                        <select name="LorR" class="form-control" id="inputLorR">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputLotNum" class="form-label">Lot#</label>
+                        <input type="number" class="form-control" id="inputLotNum">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputElectricCompany" class="form-label">Electic Company</label>
+                        <select name="electriccompany" class="form-control" id="inputElectricCompany">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputNotes" class="form-label">Notes</label>
+                        <input type="text" class="form-control" id="inputNotes">
+                    </div>
+                    <div class="col-md-4 g-4">
+                        <a href="#" class="btn btn-primary">Save Address</a>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
