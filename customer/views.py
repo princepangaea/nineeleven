@@ -14,9 +14,9 @@ def CustomerForm(request):
     return render(request, 'customer/customerform.html', context)
 
 def CustomerDetail(request, cpk):
-    customer = Customer.objects.get(id=cpk)
-    customeraddresses = Address.objects.filter(customer)
-    context = {'customer_detail':customer, 'cpk':cpk, 'customeradresses':customeraddresses }
+    customer_detail = Customer.objects.get(id=cpk)
+    custaddresses = Address.objects.filter(customer__id=cpk)
+    context = {'customer_detail':customer_detail, 'cpk':cpk, 'custaddresses':custaddresses }
     return render(request, 'customer/customerdetail.html', context)
 
 '''
