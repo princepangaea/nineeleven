@@ -4,6 +4,64 @@
 {% endblock title %}
 
 {% block content %}
-<h1>Add Customer</h1>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item"><a href="#">Add Customer</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">List</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'addcustomer' %}" method="post" class="row g-2">
+                {% csrf_token %}
+                    <div class="col-sm-2">
+                        <label for="inputCustomerFirstName" class="form-label">First Name</label>
+                        {{form.first_name}}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerLastName" class="form-label">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerEmail" class="form-label">email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerPhone" class="form-label">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerMailingAddress" class="form-label">Mailing Address</label>
+                        {{ form.mailing_address }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerMailingCity" class="form-label">City</label>
+                        {{ form.mailing_city }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerMailingState" class="form-label">State</label>
+                        {{ form.mailing_state }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustomerMailingZip" class="form-label">Zip</label>
+                        {{ form.mailing_zip }}
+                    </div>
+
+                    <div class="col-md-4 g-4">
+                        <button type="submit" class="btn btn-primary">Save Customer</button>
+                    </div>                  
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>
 
 {% endblock %}
