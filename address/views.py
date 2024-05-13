@@ -14,7 +14,6 @@ def AddressList(request):
     context = {'addresses':addresses, 'work_area':workareaselect}
     return render(request, 'address/addresslist.html', context)
 
-
 def AddAddress(request):
     form = AddressForm(request.POST or None)
     if request.method == "POST":
@@ -23,6 +22,11 @@ def AddAddress(request):
         return HttpResponseRedirect('addresslist')
     context = {'form':form}
     return render(request, 'address/addressform.html', context)
+
+def EditAddress(request, apk):
+    currentaddress = Address.objects.get(id=apk)
+    context = {'apk':apk, 'form':form }
+    return render(request, 'address/addressform.html',context)
 
 def AddressDetail(request, apk):
     address_detail = Address.objects.get(id=apk)

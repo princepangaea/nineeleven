@@ -27,10 +27,16 @@
 
         {% for i in custaddresses %}
           {{ i.street }}
+          {{ i.aptnum }}
           {{ i.city }}
           {{ i.state }}
           {{ i.zip }}
+
         {% endfor %}
+
+    <div class="col-md-2">
+      <a href="{% url 'editcustomer' cpk %}" class="btn btn-primary">Edit Customer</a>
+    </div>
 
 {% endblock %}
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
 from .models import Customer
 from address.models import Address
 from .forms import CustomerForm
@@ -15,6 +15,16 @@ def CustomerDetail(request, cpk):
     custaddresses = Address.objects.filter(customer__id=cpk)
     context = {'customer_detail':customer_detail, 'cpk':cpk, 'custaddresses':custaddresses }
     return render(request, 'customer/customerdetail.html', context)
+
+def EditCustomer(request, cpk):
+    currentcustomer = Customer.objects.get(id=cpk)
+    form = CustomerForm(request.POST or None, instance=currentcustomer)
+    if form.is_valid():
+        form.save()
+        return redirect('customerlist')
+    context = {'cpk':cpk, 'form':form }
+    return render(request, 'customer/customerform.html', context)
+
 
 def AddCustomer(request):
     form = CustomerForm(request.POST or None)
