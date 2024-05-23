@@ -21,12 +21,16 @@ def AddAddress(request):
             AddAddress = form.save()
         return HttpResponseRedirect('addresslist')
     context = {'form':form}
-    return render(request, 'address/addressform.html', context)
+    return render(request, 'address/addaddress.html', context)
 
 def EditAddress(request, apk):
     currentaddress = Address.objects.get(id=apk)
-    context = {'apk':apk, 'form':form }
-    return render(request, 'address/addressform.html',context)
+    form = AddressForm(request.POST or None, instance=currentaddress)
+    if form.is_valid():
+        form.save()
+        return redirect('addressdetail')
+    context = {'form':form, 'apk':apk}
+    return render(request, 'address/editaddress.html', context)
 
 def AddressDetail(request, apk):
     address_detail = Address.objects.get(id=apk)

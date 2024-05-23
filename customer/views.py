@@ -21,9 +21,9 @@ def EditCustomer(request, cpk):
     form = CustomerForm(request.POST or None, instance=currentcustomer)
     if form.is_valid():
         form.save()
-        return redirect('customerlist')
-    context = {'cpk':cpk, 'form':form }
-    return render(request, 'customer/customerform.html', context)
+        return redirect('customerdetail')
+    context = {'form':form, 'cpk':cpk}
+    return render(request, 'customer/editcustomer.html', context)
 
 
 def AddCustomer(request):
@@ -33,5 +33,5 @@ def AddCustomer(request):
             AddCustomer = form.save() # type: ignore
         return HttpResponseRedirect('customerlist')
     context = {'form':form}
-    return render(request, 'customer/customerform.html', context)
+    return render(request, 'customer/addcustomer.html', context)
 
