@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from .models import Address, ElectricProvider, WorkArea
 from customer.models import Customer
@@ -28,7 +28,7 @@ def EditAddress(request, apk):
     form = AddressForm(request.POST or None, instance=currentaddress)
     if form.is_valid():
         form.save()
-        return redirect('addressdetail')
+        return redirect('editaddress')
     context = {'form':form, 'apk':apk}
     return render(request, 'address/editaddress.html', context)
 

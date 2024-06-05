@@ -18,7 +18,7 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{% url 'addaddress' %}" method="post" class="row g-2">
+                <form action="{% url 'editaddress' apk %}" method="post" class="row g-2">
                 {% csrf_token %}
                     <div class="col-sm-2">
                         <label for="inputNumber" class="form-label">Number</label>
