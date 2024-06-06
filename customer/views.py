@@ -3,7 +3,6 @@ from .models import Customer
 from address.models import Address
 from .forms import CustomerForm
 
-
 # Create your views here.
 def CustomerList(request):
     customer = Customer.objects.all
@@ -24,7 +23,6 @@ def EditCustomer(request, cpk):
         return redirect('customerdetail', cpk)
     context = {'form':form, 'cpk':cpk}
     return render(request, 'customer/editcustomer.html', context)
-
 
 def AddCustomer(request):
     form = CustomerForm(request.POST or None)

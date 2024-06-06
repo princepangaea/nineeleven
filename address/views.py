@@ -28,7 +28,7 @@ def EditAddress(request, apk):
     form = AddressForm(request.POST or None, instance=currentaddress)
     if form.is_valid():
         form.save()
-        return redirect('editaddress')
+        return redirect('addressdetail', apk)
     context = {'form':form, 'apk':apk}
     return render(request, 'address/editaddress.html', context)
 
