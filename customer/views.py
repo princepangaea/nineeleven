@@ -21,7 +21,7 @@ def EditCustomer(request, cpk):
     form = CustomerForm(request.POST or None, instance=currentcustomer)
     if form.is_valid():
         form.save()
-        return redirect('customerdetail')
+        return redirect('customerdetail', cpk)
     context = {'form':form, 'cpk':cpk}
     return render(request, 'customer/editcustomer.html', context)
 
