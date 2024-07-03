@@ -17,3 +17,4 @@ class Permit911(models.Model):
     permaddymvdate = models.TextField(max_length=25) #move date on permit
 
     
+    
