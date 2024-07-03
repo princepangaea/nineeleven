@@ -17,4 +17,18 @@ class Permit911(models.Model):
     permaddymvdate = models.TextField(max_length=25) #move date on permit
 
     
+'''
+    category=forms.ModelChoiceField(
+        label="",
+        required=False,
+        queryset=Category.objects.all(),
+        empty_label="Select a category (optional)",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Choose a category"
+            }
+        )
+    )
     
+    discord chris_calmatlas — Today at 8:58 PM'''
