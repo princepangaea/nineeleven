@@ -21,15 +21,15 @@
           </a>
         </li>        
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="shopping-cart" class="align-text-bottom"></span>
-            Products
+          <a class="nav-link {% if request.resolver_match.url_name == 'reportshome' %}active{% endif %}" href="{% url 'reportshome' %}">
+            <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+            Reports
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">
-            <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-            Reports
+            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+            Permits
           </a>
         </li>
         <li class="nav-item">

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+    Reports Home
+{% endblock title %}
+
+{% block content %}
+<h1> Reports Home </h1>
+
+{% for i in workareas %}
+<a class="btn btn-primary" href="#">{{ i.work_area_values }}</a> 
+{% endfor %}
+
+{% endblock %}
