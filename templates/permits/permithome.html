@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    Permit Home
+{% endblock title %}
+
+{% block content %}
+<h1> Permit Home </h1>
+
+<p><a href="{% url 'e911permit' %}"> 911 Permit </a></p>
+<p><a href="{% url 'clecopermit' %}"> Cleco Permit </a></p>
+<p><a href="{% url 'swepcopermit' %}"> SWEPCO Permit </a></p>
+
+
+{% endblock %}
