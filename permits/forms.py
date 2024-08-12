@@ -1,14 +1,18 @@
 from django import forms
-from . models import Permit911
+from django.forms import ModelForm
+from .models import Permit911
 
 class Permit911Form(forms.ModelForm):
     permitdate = forms.DateField()
     permitnumber = forms.IntegerField()
-    permcompany = forms.ModelChoiceField()
+    # permcompany = forms.ModelChoiceField()
     customer = forms.ChoiceField()
     permnewaddy = ()
     permoldaddy = ()
-    permaddymvdate = forms.DateField(initial=datetime.date.today)
+    # permaddymvdate = forms.DateField(initial=datetime.date.today)
+    class Meta:
+        model = Permit911
+        fields = '__all__'
 
 '''
     category=forms.ModelChoiceField(
