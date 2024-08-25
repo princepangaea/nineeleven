@@ -14,5 +14,5 @@ class Permit911(models.Model):
     customer = models.ForeignKey(to=Customer, on_delete=models.DO_NOTHING)
     permnewaddy = models.ForeignKey(Address, related_name='pnewaddress', on_delete=models.DO_NOTHING)
     permoldaddy = models.ForeignKey(Address, related_name='poldaddress', on_delete=models.DO_NOTHING, default=None)
-    permaddymvdate = models.TextField(max_length=25) #move date on permit
+    permaddymvdate = models.DateField(max_length=25) #move date on permit
     

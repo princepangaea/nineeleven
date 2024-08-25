@@ -14,8 +14,8 @@ def E911Permit(request):
 
 def ClecoPermit(request):
     context = {}
-    return render(request, 'permits/e911Permit.html', context)
+    return render(request, 'permits/ClecoPermit.html', context)
 
 def SwepcoPermit(request):
     context = {}
-    return render(request, 'permits/e911Permit.html', context)
+    return render(request, 'permits/SwepcoPermit.html', context)
