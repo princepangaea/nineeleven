@@ -36,7 +36,10 @@
 
     <div class="col-md-2">
       <a href="{% url 'editcustomer' customer_detail.id %}" class="btn btn-primary">Edit Customer</a>
+      <a href="{% url 'createcustomerpermit' customer_detail.id %}" class="btn btn-primary">Old Permit Button</a>
+      <a href="{% url 'e911permit' customer_detail.id %}" class="btn btn-primary">Create Permit</a>
     </div>
+
 
 {% endblock %}
 

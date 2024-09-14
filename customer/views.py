@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
 from .models import Customer
 from address.models import Address
-from .forms import CustomerForm
+from .forms import CustomerForm, CreatePermitfromCustomer
 
 # Create your views here.
 def CustomerList(request):
@@ -33,3 +33,23 @@ def AddCustomer(request):
     context = {'form':form}
     return render(request, 'customer/addcustomer.html', context)
 
+def CreateCustomerPermit(request, cpk):
+    currentcustomer = Customer.objects.get(id=cpk)
+    form = CreatePermitfromCustomer(request.POST or None, instance=currentcustomer)
+    if form.is_valid():
+        form.save()
+        return redirect('createcustomerpermit', cpk)
+    context = {'form':form, 'cpk':cpk}
+    return render(request, 'customer/createcustomerpermit.html', context)
+
+
+"""
+def CreateCustomerPermit(request, cpk):
+    currentcustomer = Customer.objects.get(id=cpk)
+    form = CreateCustomerPermit(request.POST or None, instance=currentcustomer)
+    if form.is_valid():
+        form.save()
+        return redirect('createcustomerpermit', cpk)
+    context = {'form':form, 'cpk':cpk}
+    return render(request, 'customer/createcustomerpermit.html', context)
+"""
