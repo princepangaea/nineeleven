@@ -3,9 +3,7 @@ from django.forms import ModelForm
 from .models import Permit911
 from datetime import datetime
 from customer.models import Customer
-from address.models import Address
-
-CUSTOMERS = Customer.first_name, Customer.last_name
+from address.models import Address, ElectricProvider
 
 class Permit911Form(forms.ModelForm):
     customer = forms.ModelChoiceField(
@@ -19,16 +17,33 @@ class Permit911Form(forms.ModelForm):
     current_address = forms.ModelChoiceField(
         queryset=Address.objects.none(),
         label="Current Address",
-        required=False
+        required=True
     )
     new_address = forms.ModelChoiceField(
         queryset=Address.objects.none(),
-        label="New Address"
+        label="New Address",
+        required=False
+    )
+    permitdate = forms.DateField(
+        initial=datetime.today,
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True
+    )
+    permitnumber = forms.IntegerField(required=True)
+    permcompany = forms.ModelChoiceField(
+        queryset=ElectricProvider.objects.all(),
+        label="Electric Provider",
+        required=True
+    )
+    permaddymvdate = forms.DateField(
+        label="Move Date",
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False
     )
 
     class Meta:
         model = Permit911
-        fields = '__all__'
+        fields = ['permitdate', 'permitnumber', 'permcompany', 'permaddymvdate', 'customer', 'permnewaddy', 'permoldaddy']
 
     def __init__(self, *args, **kwargs):
         customer = kwargs.pop('customer', None)
@@ -37,87 +52,43 @@ class Permit911Form(forms.ModelForm):
         if customer:
             self.fields['customer'].initial = customer
             self.fields['customer_name'].initial = f"{customer.first_name} {customer.last_name}"
-            # Fetch addresses related to this customer
-            customer_addresses = Address.objects.filter(customer=customer)
-            self.fields['current_address'].queryset = customer_addresses
-            self.fields['new_address'].queryset = customer_addresses
             
-            # Set initial value for current_address
+            # Get all addresses for this customer
+            customer_addresses = Address.objects.filter(customer=customer)
+            
+            # Update the querysets for both address fields
+            self.fields['current_address'] = forms.ModelChoiceField(
+                queryset=customer_addresses,
+                label="Current Address",
+                required=True
+            )
+            self.fields['new_address'] = forms.ModelChoiceField(
+                queryset=customer_addresses,
+                label="New Address",
+                required=False
+            )
+            
+            # Set initial values if addresses exist
             if customer_addresses.exists():
                 self.fields['current_address'].initial = customer_addresses.first()
-        else:
-            self.fields['current_address'].queryset = Address.objects.none()
-            self.fields['new_address'].queryset = Address.objects.none()
 
     def clean(self):
         cleaned_data = super().clean()
-        # Remove current_address from cleaned_data as it's not in the model
-        cleaned_data.pop('current_address', None)
+        # Map the address fields to their model counterparts
+        if 'new_address' in cleaned_data:
+            cleaned_data['permnewaddy'] = cleaned_data.pop('new_address')
+        if 'current_address' in cleaned_data:
+            cleaned_data['permoldaddy'] = cleaned_data.pop('current_address')
         return cleaned_data
-        
-'''
-class Permit911Form(forms.ModelForm):
-    customer = forms.ModelChoiceField(
-        queryset=Customer.objects.all(),
-        widget=forms.HiddenInput()
-    )
-    current_address = forms.ModelChoiceField(
-        queryset=Customer.objects.none(),
-        label="Current Address"
-    )
-    new_address = forms.ModelChoiceField(
-        queryset=Customer.objects.none(),
-        label="New Address"
-    )
 
-    class Meta:
-        model = Permit911
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        customer = kwargs.pop('customer', None)
-        super().__init__(*args, **kwargs)
-        
-        if customer:
-            self.fields['customer'].initial = customer
-            self.fields['current_address'].queryset = customer.addresses.all()
-            self.fields['new_address'].queryset = customer.addresses.all()
-        else:
-            self.fields['current_address'].queryset = Customer.objects.none()
-            self.fields['new_address'].queryset = Customer.objects.none()
-'''
-
-'''class Permit911Form(forms.ModelForm):
-
-    class Meta:
-        model = Permit911
-        fields = '__all__'
-'''        
-
-'''class Permit911Form(forms.ModelForm):
-    permitdate = forms.DateField(widget=forms.SelectDateWidget(), label='permitdate', initial=datetime.today)
-    permitnumber = forms.IntegerField()
-    # permcompany = forms.ModelChoiceField()
-    # customer = forms.ChoiceField( )
-    permnewaddy = ()
-    permaddymvdate = forms.DateField()
-    class Meta:
-        model = Permit911
-        fields = '__all__'
-'''        
-
-'''
-    category=forms.ModelChoiceField(
-        label="",
-        required=False,
-        queryset=Category.objects.all(),
-        empty_label="Select a category (optional)",
-        widget=forms.Select(
-            attrs={
-                "class": "form-control mb-3",
-                "placeholder": "Choose a category"
-            }
-        )
-    )
-    
-    discord chris_calmatlas — Today at 8:58 PM'''    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Ensure the addresses are properly set
+        if hasattr(self, 'cleaned_data'):
+            if 'permnewaddy' in self.cleaned_data:
+                instance.permnewaddy = self.cleaned_data['permnewaddy']
+            if 'permoldaddy' in self.cleaned_data:
+                instance.permoldaddy = self.cleaned_data['permoldaddy']
+        if commit:
+            instance.save()
+        return instance

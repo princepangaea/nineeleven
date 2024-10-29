@@ -12,7 +12,6 @@ class Permit911(models.Model):
     permitdate = models.DateField()
     permitnumber = models.BigIntegerField(null=True)
     permcompany = models.ForeignKey(to=ElectricProvider, on_delete=models.DO_NOTHING)
-    permnewaddy = models.ForeignKey(Address, related_name='pnewaddress', on_delete=models.DO_NOTHING)
-    permoldaddy = models.ForeignKey(Address, related_name='poldaddress', on_delete=models.DO_NOTHING, default=None)
-    permaddymvdate = models.DateField(max_length=25) #move date on permit
-    
+    permnewaddy = models.ForeignKey(Address, related_name='pnewaddress', on_delete=models.DO_NOTHING, null=True, blank=True)
+    permoldaddy = models.ForeignKey(Address, related_name='poldaddress', on_delete=models.DO_NOTHING, default=None, null=True, blank=True)
+    permaddymvdate = models.DateField(max_length=25, null=True, blank=True) #move date on permit

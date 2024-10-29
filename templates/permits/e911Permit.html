@@ -4,27 +4,105 @@
 {% endblock title %}
 
 {% block content %}
-<h1> 911 Permit </h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item"><a href="{% url 'customerdetail' cpk %}">Customer Detail</a></li>
+                    <li class="breadcrumb-item active">Create 911 Permit</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
 
-{{form}}
+    <div class="card">
+        <div class="card-header">
+            <h4>Create 911 Permit</h4>
+        </div>
+        <div class="card-body">
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <h5>Please correct the following errors:</h5>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
 
-<br>
-<br>
+            <form action="{% url 'create911permit' cpk %}" method="post" class="row g-3">
+                {% csrf_token %}
+                {{ form.customer }}
+                
+                <div class="col-md-6">
+                    {{ form.customer_name.label_tag }}
+                    {{ form.customer_name }}
+                    {% if form.customer_name.errors %}
+                        <div class="invalid-feedback d-block">{{ form.customer_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
-{{form.permitdate}}<br>
-permitdate <br>
-{{form.permitnumber}}<br>
-<br>
-{{form.permcompany}}<br>
-<br>
-{{form.customer}}<br>
-<br>
-{{form.permnewaddy}}<br>
-<br>
-{{form.permoldaddy}}<br>
-<br>
-{{form.permaddymvdate}}<br>
-permmvdate<br>
+                <div class="col-md-6">
+                    {{ form.permitnumber.label_tag }}
+                    {{ form.permitnumber }}
+                    {% if form.permitnumber.errors %}
+                        <div class="invalid-feedback d-block">{{ form.permitnumber.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
+                <div class="col-md-6">
+                    {{ form.current_address.label_tag }}
+                    {{ form.current_address }}
+                    {% if form.current_address.errors %}
+                        <div class="invalid-feedback d-block">{{ form.current_address.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
+                <div class="col-md-6">
+                    {{ form.new_address.label_tag }}
+                    {{ form.new_address }}
+                    {% if form.new_address.errors %}
+                        <div class="invalid-feedback d-block">{{ form.new_address.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form.permcompany.label_tag }}
+                    {{ form.permcompany }}
+                    {% if form.permcompany.errors %}
+                        <div class="invalid-feedback d-block">{{ form.permcompany.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form.permitdate.label_tag }}
+                    {{ form.permitdate }}
+                    {% if form.permitdate.errors %}
+                        <div class="invalid-feedback d-block">{{ form.permitdate.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form.permaddymvdate.label_tag }}
+                    {{ form.permaddymvdate }}
+                    {% if form.permaddymvdate.errors %}
+                        <div class="invalid-feedback d-block">{{ form.permaddymvdate.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary">Save Permit</button>
+                    <a href="{% url 'customerdetail' cpk %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}

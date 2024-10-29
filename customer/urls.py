@@ -7,6 +7,7 @@ urlpatterns = [
     path('customerlist', views.CustomerList, name='customerlist'),
     path('addcustomer', views.AddCustomer, name='addcustomer'),
     path('editcustomer/<int:cpk>', views.EditCustomer, name='editcustomer'),
-    path('createcustomerpermit/<int:cpk>', views.CreateCustomerPermit, name='createcustomerpermit'), #clean this up moving url to permits
-    path('customerdetail/<int:cpk>', views.CustomerDetail, name='customerdetail')
+    path('createcustomerpermit/<int:cpk>', views.CreateCustomerPermit, name='createcustomerpermit'),
+    path('customerdetail/<int:cpk>', views.CustomerDetail, name='customerdetail'),
+    path('search/', views.search, name='search'),
 ]

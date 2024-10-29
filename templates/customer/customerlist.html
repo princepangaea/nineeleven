@@ -30,20 +30,20 @@
     <th scope="col">Name</th>
     <th scope="col">Mailing Address</th>
     <th scope="col">Phone</th>
-    <th scope="col">email</th>
+    <th scope="col">Email</th>
     </tr>
     </thead>
-        <tbody>
-            {% for Customer in customer %}
-                    <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td><a href="{% url 'customerdetail' Customer.id %}"> {{ Customer.last_name }}, {{ Customer.first_name }}</a></td>
-                    <td>{{ Customer.mailing_address }} {{ Customer.city }} {{ Customer.mailing_state }} {{ Customer.mailing_zip }}</td>
-                    <td>{{ Customer.phone }}</td>
-                    <td>{{ Customer.email }}</td>
-                    </tr>
-            {% endfor %}                    
-                </tbody>
-                </table>
+    <tbody>
+        {% for Customer in customer %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a href="{% url 'customerdetail' Customer.id %}">{{ Customer.last_name }}, {{ Customer.first_name }}</a></td>
+            <td>{{ Customer.mailing_address }}, {{ Customer.mailing_city }}, {{ Customer.mailing_state }} {{ Customer.mailing_zip }}</td>
+            <td>{{ Customer.phone }}</td>
+            <td>{{ Customer.email }}</td>
+        </tr>
+        {% endfor %}                    
+    </tbody>
+</table>
 
 {% endblock %}

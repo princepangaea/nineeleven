@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+    Search Results
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Search Results for "{{ query }}"</h1>
+
+    {% if customers %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Customers</h4>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                {% for customer in customers %}
+                <a href="{% url 'customerdetail' customer.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ customer.last_name }}, {{ customer.first_name }}</h5>
+                    </div>
+                    <p class="mb-1">{{ customer.mailing_address }}, {{ customer.mailing_city }}, {{ customer.mailing_state }}</p>
+                    <small>{{ customer.phone }} | {{ customer.email }}</small>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if addresses %}
+    <div class="card">
+        <div class="card-header">
+            <h4>Addresses</h4>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                {% for address in addresses %}
+                <a href="{% url 'addressdetail' address.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ address.housenum }} {{ address.street }}{% if address.aptnum %} Apt {{ address.aptnum }}{% endif %}</h5>
+                    </div>
+                    <p class="mb-1">{{ address.city }}, {{ address.state }} {{ address.zip }}</p>
+                    {% if address.customer %}
+                    <small>Customer: <a href="{% url 'customerdetail' address.customer.id %}">{{ address.customer.last_name }}, {{ address.customer.first_name }}</a></small>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not customers and not addresses %}
+    <div class="alert alert-info">
+        No results found for "{{ query }}".
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
