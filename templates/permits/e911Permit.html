@@ -1,108 +1,82 @@
 {% extends "base.html" %}
 {% block title %}
-    911 Permit
+    E911 Permit
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-                    <li class="breadcrumb-item"><a href="{% url 'customerdetail' cpk %}">Customer Detail</a></li>
-                    <li class="breadcrumb-item active">Create 911 Permit</li>
+                    <li class="breadcrumb-item"><a href="{% url 'customerlist' %}">Customer List</a></li>
+                    {% if customer %}
+                        <li class="breadcrumb-item"><a href="{% url 'customerdetail' customer.id %}">Customer Detail</a></li>
+                    {% endif %}
+                    <li class="breadcrumb-item active" aria-current="page">E911 Permit</li>
                 </ol>
             </nav>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <h4>Create 911 Permit</h4>
-        </div>
         <div class="card-body">
-            {% if form.errors %}
-            <div class="alert alert-danger">
-                <h5>Please correct the following errors:</h5>
-                <ul>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li>{{ field.label }}: {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+            {% if customer %}
+                <h5 class="card-title">E911 Permit for {{ customer.last_name }}, {{ customer.first_name }}</h5>
+                <form action="{% url 'e911permit' customer.id %}" method="post" class="row g-3">
+                    {% csrf_token %}
+                    
+                    <div class="col-md-6">
+                        <label for="{{ form.permitdate.id_for_label }}" class="form-label">Permit Date</label>
+                        {{ form.permitdate }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="{{ form.permitnumber.id_for_label }}" class="form-label">Permit Number</label>
+                        {{ form.permitnumber }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="{{ form.permcompany.id_for_label }}" class="form-label">Electric Provider</label>
+                        {{ form.permcompany }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="{{ form.permaddymvdate.id_for_label }}" class="form-label">Move Date</label>
+                        {{ form.permaddymvdate }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="{{ form.permoldaddy.id_for_label }}" class="form-label">Current Address</label>
+                        {{ form.permoldaddy }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="{{ form.permnewaddy.id_for_label }}" class="form-label">New Address</label>
+                        {{ form.permnewaddy }}
+                    </div>
+
+                    {% if form.errors %}
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Please correct the errors below.
+                                {{ form.errors }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Save Permit</button>
+                        <a href="{% url 'customerdetail' customer.id %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            {% else %}
+                <h5 class="card-title">E911 Permit</h5>
+                <div class="alert alert-warning">
+                    Please select a customer from the <a href="{% url 'customerlist' %}">customer list</a> to create a permit.
+                </div>
             {% endif %}
-
-            <form action="{% url 'create911permit' cpk %}" method="post" class="row g-3">
-                {% csrf_token %}
-                {{ form.customer }}
-                
-                <div class="col-md-6">
-                    {{ form.customer_name.label_tag }}
-                    {{ form.customer_name }}
-                    {% if form.customer_name.errors %}
-                        <div class="invalid-feedback d-block">{{ form.customer_name.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    {{ form.permitnumber.label_tag }}
-                    {{ form.permitnumber }}
-                    {% if form.permitnumber.errors %}
-                        <div class="invalid-feedback d-block">{{ form.permitnumber.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    {{ form.current_address.label_tag }}
-                    {{ form.current_address }}
-                    {% if form.current_address.errors %}
-                        <div class="invalid-feedback d-block">{{ form.current_address.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    {{ form.new_address.label_tag }}
-                    {{ form.new_address }}
-                    {% if form.new_address.errors %}
-                        <div class="invalid-feedback d-block">{{ form.new_address.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    {{ form.permcompany.label_tag }}
-                    {{ form.permcompany }}
-                    {% if form.permcompany.errors %}
-                        <div class="invalid-feedback d-block">{{ form.permcompany.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    {{ form.permitdate.label_tag }}
-                    {{ form.permitdate }}
-                    {% if form.permitdate.errors %}
-                        <div class="invalid-feedback d-block">{{ form.permitdate.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    {{ form.permaddymvdate.label_tag }}
-                    {{ form.permaddymvdate }}
-                    {% if form.permaddymvdate.errors %}
-                        <div class="invalid-feedback d-block">{{ form.permaddymvdate.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-12 mt-3">
-                    <button type="submit" class="btn btn-primary">Save Permit</button>
-                    <a href="{% url 'customerdetail' cpk %}" class="btn btn-secondary">Cancel</a>
-                </div>
-            </form>
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

@@ -1,71 +1,94 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView
 from .models import Customer
-from address.models import Address
 from .forms import CustomerForm
+from django.db.models import Q
+from address.models import Address
+import string
 
-def CustomerList(request):
-    customers = Customer.objects.all().order_by('last_name', 'first_name')
-    context = {'customer': customers}  # Keep as 'customer' to match template
-    return render(request, 'customer/customerlist.html', context)
+class CustomerList(ListView):
+    model = Customer
+    template_name = 'customer/customerlist.html'
+    context_object_name = 'customers'
+    ordering = ['last_name']
+    paginate_by = 10
 
-def AddCustomer(request):
-    form = CustomerForm(request.POST or None)
+    def get_paginate_by(self, queryset):
+        """Get the number of items to paginate by, from the request."""
+        return self.request.GET.get('page_size', self.paginate_by)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        letter = self.request.GET.get('letter', '')
+        
+        if letter and letter in string.ascii_uppercase:
+            queryset = queryset.filter(last_name__istartswith=letter)
+        
+        return queryset.order_by('last_name', 'first_name')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get all available first letters from customer last names
+        available_letters = (
+            Customer.objects.values_list('last_name', flat=True)
+            .distinct()
+            .order_by('last_name')
+        )
+        available_letters = sorted(set(name[0].upper() for name in available_letters if name))
+        
+        # Add all alphabet letters, marking which ones have customers
+        alphabet = list(string.ascii_uppercase)
+        context['letters'] = [
+            {'letter': l, 'has_customers': l in available_letters}
+            for l in alphabet
+        ]
+        context['current_letter'] = self.request.GET.get('letter', '')
+        return context
+
+def customer_detail(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    addresses = Address.objects.filter(customer=customer).order_by('street', 'housenum')
+    return render(request, 'customer/customerdetail.html', {
+        'customer': customer,
+        'addresses': addresses
+    })
+
+def add_customer(request):
     if request.method == "POST":
+        form = CustomerForm(request.POST)
         if form.is_valid():
-            AddCustomer = form.save()
-        return HttpResponseRedirect('customerlist')
-    context = {'form':form}
-    return render(request, 'customer/addcustomer.html', context)
+            customer = form.save()
+            return redirect('customerdetail', pk=customer.pk)
+    else:
+        form = CustomerForm()
+    return render(request, 'customer/addcustomer.html', {'form': form})
 
-def EditCustomer(request, cpk):
-    currentcustomer = Customer.objects.get(id=cpk)
-    form = CustomerForm(request.POST or None, instance=currentcustomer)
-    if form.is_valid():
-        form.save()
-        return redirect('customerdetail', cpk)
-    context = {'form':form, 'cpk':cpk}
-    return render(request, 'customer/editcustomer.html', context)
+def edit_customer(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    if request.method == "POST":
+        form = CustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            customer = form.save()
+            return redirect('customerdetail', pk=customer.pk)
+    else:
+        form = CustomerForm(instance=customer)
+    return render(request, 'customer/editcustomer.html', {
+        'form': form,
+        'customer': customer
+    })
 
-def CustomerDetail(request, cpk):
-    customer_detail = Customer.objects.get(id=cpk)
-    custaddresses = Address.objects.filter(customer=cpk)
-    context = {'customer_detail':customer_detail, 'custaddresses':custaddresses, 'cpk':cpk }
-    return render(request, 'customer/customerdetail.html', context)
-
-def CreateCustomerPermit(request, cpk):
-    currentcustomer = Customer.objects.get(id=cpk)
-    return redirect('create911permit', cpk=cpk)
-
-def search(request):
-    query = request.GET.get('q', '')
-    
+def search_customers(request):
+    query = request.GET.get('q')
     if query:
-        # Search in customers
-        customers = Customer.objects.filter(
+        results = Customer.objects.filter(
             Q(first_name__icontains=query) |
             Q(last_name__icontains=query) |
-            Q(phone__icontains=query) |
-            Q(email__icontains=query) |
+            Q(phone__icontains=query)|
             Q(mailing_address__icontains=query)
-        ).order_by('last_name', 'first_name')
-        
-        # Search in addresses
-        addresses = Address.objects.filter(
-            Q(street__icontains=query) |
-            Q(city__icontains=query) |
-            Q(state__icontains=query) |
-            Q(zip__icontains=query) |
-            Q(housenum__icontains=query)
-        ).order_by('street', 'housenum')
+        )
     else:
-        customers = []
-        addresses = []
-    
-    context = {
-        'customers': customers,
-        'addresses': addresses,
+        results = []
+    return render(request, 'customer/search_results.html', {
+        'customers': results,
         'query': query
-    }
-    return render(request, 'customer/search_results.html', context)
+    })

@@ -4,47 +4,71 @@
 {% endblock title %}
 
 {% block content %}
-<h1> Customer Detail </h1>
-
-<div class="card" style="width: 50rem; margin-top: 1rem;">
-    <div class="card-body">
-      <h4 class="card-title"> 
-        {{ customer_detail.last_name }},
-        {{ customer_detail.first_name }}
-      </h4>
-      <h5>
-        {{ customer_detail.mailing_address }}<br>
-        {{ customer_detail.mailing_city }},
-        {{ customer_detail.mailing_state }}
-        {{ customer_detail.mailing_zip }}<br>
-        {{ customer_detail.phone }}<br>
-        {{ customer_detail.email }}
-      </h5>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item"><a href="{% url 'customerlist' %}">Customer List</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Customer Detail</li>
+                </ol>
+            </nav>
+        </div>
     </div>
-</div>
 
-<div class="card" style="width: 50rem; margin-top: 1rem;">
-    <div class="card-body">
-        <h4 class="card-title">Customer Addresses</h4>
-        <div class="list-group">
-            {% for address in custaddresses %}
-            <div class="list-group-item">
-                {{ address.housenum }} {{ address.street }}
-                {% if address.aptnum %} Apt {{ address.aptnum }}{% endif %}
-                <br>
-                {{ address.city }}, {{ address.state }} {{ address.zip }}
-            </div>
-            {% endfor %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ customer.last_name }}, {{ customer.first_name }}</h5>
+            <p class="card-text">
+                <strong>Phone:</strong> {{ customer.phone }}<br>
+                <strong>Email:</strong> {{ customer.email }}<br>
+                <strong>Mailing Address:</strong> {{ customer.mailing_address }}, {{ customer.mailing_city }}, {{ customer.mailing_state }} {{ customer.mailing_zip }}
+            </p>
+            <a href="{% url 'e911permit' customer.id %}" class="btn btn-primary">Create Permit</a>
+            <a href="{% url 'addaddress_customer' customer.id %}" class="btn btn-success">Add Address</a>
+            <a href="{% url 'editcustomer' customer.id %}" class="btn btn-warning">Edit Customer</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Associated Addresses</h5>
+        </div>
+        <div class="card-body">
+            {% if addresses %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th>Work Area</th>
+                                <th>Provider</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for address in addresses %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'addressdetail' address.id %}">
+                                        {{ address.housenum }} 
+                                        {% if address.aptnum %}#{{ address.aptnum }}{% endif %}
+                                        {{ address.street }},
+                                        {{ address.city }}, {{ address.state }} {{ address.zip }}
+                                    </a>
+                                </td>
+                                <td>{{ address.work_area_num|default:"-" }}</td>
+                                <td>{{ address.provider|default:"-" }}</td>
+                                <td>{{ address.notes|default:"-" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="mb-0">No addresses associated with this customer.</p>
+            {% endif %}
         </div>
     </div>
 </div>
-
-<div class="row mt-3">
-    <div class="col-md-6">
-        <a href="{% url 'editcustomer' customer_detail.id %}" class="btn btn-primary">Edit Customer</a>
-        <a href="{% url 'create911permit' customer_detail.id %}" class="btn btn-primary">Create Permit</a>
-        <a href="{% url 'addaddress_customer' customer_detail.id %}" class="btn btn-success">Add Address</a>
-    </div>
-</div>
-
 {% endblock %}

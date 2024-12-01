@@ -1,67 +1,73 @@
 {% extends "base.html" %}
 {% block title %}
-    Add Customer
+    Edit Customer
 {% endblock title %}
 
 {% block content %}
-
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-10">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-                    <li class="breadcrumb-item"><a href="#">Add Customer</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">List</li>
+                    <li class="breadcrumb-item"><a href="{% url 'customerlist' %}">Customer List</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'customerdetail' customer.id %}">Customer Detail</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Customer</li>
                 </ol>
             </nav>
         </div>
 
         <div class="card">
             <div class="card-body">
-                <form action="{% url 'editcustomer' cpk %}" method="post" class="row g-2">
-                {% csrf_token %}
-                    <div class="col-sm-2">
-                        <label for="inputCustomerFirstName" class="form-label">First Name</label>
-                        {{form.first_name}}
+                <h5 class="card-title">Edit Customer</h5>
+                <form method="post" class="row g-3">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        {{ form.first_name.errors }}
+                        {{ form.first_name }}
                     </div>
-                    <div class="col-md-2">
-                        <label for="inputCustomerLastName" class="form-label">Last Name</label>
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        {{ form.last_name.errors }}
                         {{ form.last_name }}
                     </div>
-                    <div class="col-md-2">
-                        <label for="inputCustomerEmail" class="form-label">email</label>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        {{ form.email.errors }}
                         {{ form.email }}
                     </div>
-                    <div class="col-md-2">
-                        <label for="inputCustomerPhone" class="form-label">Phone</label>
+                    <div class="col-md-6">
+                        <label class="form-label">Phone</label>
+                        {{ form.phone.errors }}
                         {{ form.phone }}
                     </div>
-                    <div class="col-md-2">
-                        <label for="inputCustomerMailingAddress" class="form-label">Mailing Address</label>
+                    <div class="col-12">
+                        <label class="form-label">Mailing Address</label>
+                        {{ form.mailing_address.errors }}
                         {{ form.mailing_address }}
                     </div>
-                    <div class="col-md-2">
-                        <label for="inputCustomerMailingCity" class="form-label">City</label>
+                    <div class="col-md-6">
+                        <label class="form-label">City</label>
+                        {{ form.mailing_city.errors }}
                         {{ form.mailing_city }}
                     </div>
-                    <div class="col-md-2">
-                        <label for="inputCustomerMailingState" class="form-label">State</label>
+                    <div class="col-md-4">
+                        <label class="form-label">State</label>
+                        {{ form.mailing_state.errors }}
                         {{ form.mailing_state }}
                     </div>
                     <div class="col-md-2">
-                        <label for="inputCustomerMailingZip" class="form-label">Zip</label>
+                        <label class="form-label">ZIP</label>
+                        {{ form.mailing_zip.errors }}
                         {{ form.mailing_zip }}
                     </div>
-
-                    <div class="col-md-4 g-4">
-                        <button type="submit" class="btn btn-primary">Save Customer</button>
-                    </div>                  
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="{% url 'customerdetail' customer.id %}" class="btn btn-secondary">Cancel</a>
+                    </div>
                 </form>
             </div>
         </div>
-
-
     </div>
 </div>
-
 {% endblock %}
